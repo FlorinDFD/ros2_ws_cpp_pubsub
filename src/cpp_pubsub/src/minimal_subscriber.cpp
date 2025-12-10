@@ -1,122 +1,73 @@
 #include <memory>
-#include <vector>
-
 #include "rclcpp/rclcpp.hpp"
 #include "sensor_msgs/msg/image.hpp"
 #include "cv_bridge/cv_bridge.hpp"
-
 #include <opencv2/opencv.hpp>
+#include "std_msgs/msg/bool.hpp"
 
-class FaceDetectorNode : public rclcpp::Node
+class KinectNode : public rclcpp::Node
 {
 public:
-  FaceDetectorNode()
-  : Node("face_detector")
-  {
-    // Parametru pentru path-ul classifier-ului de față
-    std::string cascade_path;
-    this->declare_parameter<std::string>(
-      "face_cascade_path",
-      "/usr/share/opencv4/haarcascades/haarcascade_frontalface_default.xml"
-    );
-    this->get_parameter("face_cascade_path", cascade_path);
+    KinectNode() : Node("kinect_node")
+    {
+        subscription_ = this->create_subscription<sensor_msgs::msg::Image>(
+            "camera/image_raw",
+            10,
+            std::bind(&KinectNode::image_callback, this, std::placeholders::_1));
 
-    if (!face_cascade_.load(cascade_path)) {
-      RCLCPP_ERROR(
-        this->get_logger(),
-        "Nu pot încărca classifier-ul pentru față de la: '%s'",
-        cascade_path.c_str()
-      );
-    } else {
-      RCLCPP_INFO(this->get_logger(), "Am încărcat classifier-ul de față din: '%s'", cascade_path.c_str());
+        face_crop_pub_ = this->create_publisher<sensor_msgs::msg::Image>("face/face_crop", 10);
+        face_detected_pub_ = this->create_publisher<std_msgs::msg::Bool>("face/detected", 10);
+
+        // Load Haar Cascade
+        if (!face_cascade_.load("/usr/share/opencv4/haarcascades/haarcascade_frontalface_default.xml")) {
+            RCLCPP_ERROR(this->get_logger(), "Nu pot încărca Haar cascade!");
+        }
+
+        RCLCPP_INFO(this->get_logger(), "Kinect node pornit!");
     }
-
-    // Ne abonăm la imaginile publicate de nodul tău (camera/image_raw)
-    subscription_ = this->create_subscription<sensor_msgs::msg::Image>(
-      "camera/image_raw",
-      10,
-      std::bind(&FaceDetectorNode::image_callback, this, std::placeholders::_1)
-    );
-  }
 
 private:
-  void image_callback(const sensor_msgs::msg::Image::SharedPtr msg)
-  {
-    // ROS Image -> OpenCV Mat
-    cv::Mat frame;
-    try {
-      frame = cv_bridge::toCvCopy(msg, "bgr8")->image;
-    } catch (const cv_bridge::Exception & e) {
-      RCLCPP_ERROR(this->get_logger(), "cv_bridge exception: %s", e.what());
-      return;
+    void image_callback(const sensor_msgs::msg::Image::SharedPtr msg)
+    {
+        cv::Mat frame = cv_bridge::toCvCopy(msg, "bgr8")->image;
+
+        std::vector<cv::Rect> faces;
+        face_cascade_.detectMultiScale(frame, faces, 1.1, 3);
+
+        if (faces.empty()) {
+            return;
+        }
+
+        // Luăm prima față
+        cv::Rect face_rect = faces[0];
+
+        // Trimitem semnal de detectare
+        auto detected_msg = std_msgs::msg::Bool();
+        detected_msg.data = true;
+        face_detected_pub_->publish(detected_msg);
+
+        // Crop face
+        cv::Mat face_crop = frame(face_rect);
+
+        std_msgs::msg::Header header;
+        header.stamp = this->get_clock()->now();
+
+        auto face_msg = cv_bridge::CvImage(header, "bgr8", face_crop).toImageMsg();
+        face_crop_pub_->publish(*face_msg);
+
+        RCLCPP_INFO(this->get_logger(), "Trimis imagine crop-uită!");
     }
 
-    if (frame.empty()) {
-      RCLCPP_WARN(this->get_logger(), "Cadru gol primit!");
-      return;
-    }
-
-    cv::Mat gray;
-    cv::cvtColor(frame, gray, cv::COLOR_BGR2GRAY);
-    cv::equalizeHist(gray, gray);
-
-    std::vector<cv::Rect> faces;
-
-    if (!face_cascade_.empty()) {
-      face_cascade_.detectMultiScale(
-        gray, faces,
-        1.1,    // scale factor
-        3,      // min neighbors
-        0,
-        cv::Size(80, 80)  // mărimea minimă a feței
-      );
-    }
-
-    for (const auto & face : faces) {
-      // Desenăm un dreptunghi pe față
-      cv::rectangle(frame, face, cv::Scalar(0, 255, 0), 2);
-
-      int x = face.x;
-      int y = face.y;
-      int w = face.width;
-      int h = face.height;
-
-      // Puncte "Kinect-like" aproximative din bounding box:
-      cv::Point left_eye( x + w * 3 / 10, y + h * 3 / 10 );
-      cv::Point right_eye( x + w * 7 / 10, y + h * 3 / 10 );
-      cv::Point nose( x + w / 2,          y + h * 5 / 10 );
-      cv::Point mouth_left(  x + w * 3 / 10, y + h * 7 / 10 );
-      cv::Point mouth_right( x + w * 7 / 10, y + h * 7 / 10 );
-      cv::Point chin( x + w / 2,          y + h * 9 / 10 );
-
-      std::vector<cv::Point> landmarks = {
-        left_eye, right_eye, nose, mouth_left, mouth_right, chin
-      };
-
-      for (const auto & p : landmarks) {
-        cv::circle(frame, p, 3, cv::Scalar(0, 0, 255), cv::FILLED);
-      }
-
-      RCLCPP_INFO_THROTTLE(
-        this->get_logger(), *this->get_clock(), 1000,
-        "Față detectată la x=%d, y=%d, w=%d, h=%d",
-        face.x, face.y, face.width, face.height
-      );
-    }
-
-    cv::imshow("Face detector (image_subscriber)", frame);
-    cv::waitKey(1);
-  }
-
-  rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr subscription_;
-  cv::CascadeClassifier face_cascade_;
+    rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr subscription_;
+    rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr face_detected_pub_;
+    rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr face_crop_pub_;
+    cv::CascadeClassifier face_cascade_;
 };
 
-int main(int argc, char * argv[])
+int main(int argc, char *argv[])
 {
-  rclcpp::init(argc, argv);
-  rclcpp::spin(std::make_shared<FaceDetectorNode>());
-  cv::destroyAllWindows();
-  rclcpp::shutdown();
-  return 0;
+    rclcpp::init(argc, argv);
+    rclcpp::spin(std::make_shared<KinectNode>());
+    rclcpp::shutdown();
+    return 0;
 }
