@@ -1,0 +1,25 @@
+[ 25%] [32mBuilding CXX object CMakeFiles/image_publisher.dir/src/minimal_publisher.cpp.o[0m
+[ 50%] [32mBuilding CXX object CMakeFiles/image_subscriber.dir/src/minimal_subscriber.cpp.o[0m
+[ 75%] [32m[1mLinking CXX executable image_publisher[0m
+[ 75%] Built target image_publisher
+[100%] [32m[1mLinking CXX executable image_subscriber[0m
+[100%] Built target image_subscriber
+-- Install configuration: ""
+-- Execute custom install script
+-- Symlinking: /home/thor/ros2_ws/install/cpp_pubsub/lib/cpp_pubsub/image_publisher
+-- Symlinking: /home/thor/ros2_ws/install/cpp_pubsub/lib/cpp_pubsub/image_subscriber
+-- Symlinking: /home/thor/ros2_ws/install/cpp_pubsub/share/ament_index/resource_index/package_run_dependencies/cpp_pubsub
+-- Symlinking: /home/thor/ros2_ws/install/cpp_pubsub/share/ament_index/resource_index/parent_prefix_path/cpp_pubsub
+-- Symlinking: /home/thor/ros2_ws/install/cpp_pubsub/share/cpp_pubsub/environment/ament_prefix_path.sh
+-- Symlinking: /home/thor/ros2_ws/install/cpp_pubsub/share/cpp_pubsub/environment/ament_prefix_path.dsv
+-- Symlinking: /home/thor/ros2_ws/install/cpp_pubsub/share/cpp_pubsub/environment/path.sh
+-- Symlinking: /home/thor/ros2_ws/install/cpp_pubsub/share/cpp_pubsub/environment/path.dsv
+-- Symlinking: /home/thor/ros2_ws/install/cpp_pubsub/share/cpp_pubsub/local_setup.bash
+-- Symlinking: /home/thor/ros2_ws/install/cpp_pubsub/share/cpp_pubsub/local_setup.sh
+-- Symlinking: /home/thor/ros2_ws/install/cpp_pubsub/share/cpp_pubsub/local_setup.zsh
+-- Symlinking: /home/thor/ros2_ws/install/cpp_pubsub/share/cpp_pubsub/local_setup.dsv
+-- Symlinking: /home/thor/ros2_ws/install/cpp_pubsub/share/cpp_pubsub/package.dsv
+-- Symlinking: /home/thor/ros2_ws/install/cpp_pubsub/share/ament_index/resource_index/packages/cpp_pubsub
+-- Symlinking: /home/thor/ros2_ws/install/cpp_pubsub/share/cpp_pubsub/cmake/cpp_pubsubConfig.cmake
+-- Symlinking: /home/thor/ros2_ws/install/cpp_pubsub/share/cpp_pubsub/cmake/cpp_pubsubConfig-version.cmake
+-- Symlinking: /home/thor/ros2_ws/install/cpp_pubsub/share/cpp_pubsub/package.xml

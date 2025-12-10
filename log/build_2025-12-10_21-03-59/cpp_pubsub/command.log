@@ -1,0 +1,2 @@
+Invoking command in '/home/thor/ros2_ws/build/cpp_pubsub': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --build /home/thor/ros2_ws/build/cpp_pubsub -- -j4 -l4
+Invoked command in '/home/thor/ros2_ws/build/cpp_pubsub' returned '2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --build /home/thor/ros2_ws/build/cpp_pubsub -- -j4 -l4

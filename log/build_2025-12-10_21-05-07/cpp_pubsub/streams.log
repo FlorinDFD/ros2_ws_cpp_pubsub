@@ -1,0 +1,36 @@
+[0.013s] Invoking command in '/home/thor/ros2_ws/build/cpp_pubsub': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake /home/thor/ros2_ws/src/cpp_pubsub -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/thor/ros2_ws/install/cpp_pubsub
+[0.030s] -- Found ament_cmake: 2.5.4 (/opt/ros/jazzy/share/ament_cmake/cmake)
+[0.237s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[0.245s] -- Found rclcpp: 28.1.13 (/opt/ros/jazzy/share/rclcpp/cmake)
+[0.273s] -- Found rosidl_generator_c: 4.6.6 (/opt/ros/jazzy/share/rosidl_generator_c/cmake)
+[0.282s] -- Found rosidl_generator_cpp: 4.6.6 (/opt/ros/jazzy/share/rosidl_generator_cpp/cmake)
+[0.292s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.306s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.367s] -- Found rmw_implementation_cmake: 7.3.2 (/opt/ros/jazzy/share/rmw_implementation_cmake/cmake)
+[0.368s] -- Found rmw_fastrtps_cpp: 8.4.3 (/opt/ros/jazzy/share/rmw_fastrtps_cpp/cmake)
+[0.440s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[0.504s] -- Found std_msgs: 5.3.6 (/opt/ros/jazzy/share/std_msgs/cmake)
+[0.518s] -- Found sensor_msgs: 5.3.6 (/opt/ros/jazzy/share/sensor_msgs/cmake)
+[0.558s] -- Found cv_bridge: 4.1.0 (/opt/ros/jazzy/share/cv_bridge/cmake)
+[0.664s] -- Configuring done (0.6s)
+[0.690s] -- Generating done (0.0s)
+[0.696s] -- Build files have been written to: /home/thor/ros2_ws/build/cpp_pubsub
+[0.709s] Invoked command in '/home/thor/ros2_ws/build/cpp_pubsub' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake /home/thor/ros2_ws/src/cpp_pubsub -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/thor/ros2_ws/install/cpp_pubsub
+[0.709s] Invoking command in '/home/thor/ros2_ws/build/cpp_pubsub': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --build /home/thor/ros2_ws/build/cpp_pubsub -- -j4 -l4
+[0.787s] [ 25%] [32mBuilding CXX object CMakeFiles/image_subscriber.dir/src/minimal_subscriber.cpp.o[0m
+[0.788s] [ 50%] [32mBuilding CXX object CMakeFiles/image_publisher.dir/src/minimal_publisher.cpp.o[0m
+[1.095s] [01m[K/home/thor/ros2_ws/src/cpp_pubsub/src/minimal_publisher.cpp:4:10:[m[K [01;31m[Kfatal error: [m[Kcv_bridge/cv_bridge.h: No such file or directory
+[1.095s]     4 | #include [01;31m[K"cv_bridge/cv_bridge.h"[m[K
+[1.095s]       |          [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~[m[K
+[1.095s] compilation terminated.
+[1.098s] [01m[K/home/thor/ros2_ws/src/cpp_pubsub/src/minimal_subscriber.cpp:4:10:[m[K [01;31m[Kfatal error: [m[Kcv_bridge/cv_bridge.h: No such file or directory
+[1.098s]     4 | #include [01;31m[K"cv_bridge/cv_bridge.h"[m[K
+[1.098s]       |          [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~[m[K
+[1.098s] compilation terminated.
+[1.099s] gmake[2]: *** [CMakeFiles/image_publisher.dir/build.make:76: CMakeFiles/image_publisher.dir/src/minimal_publisher.cpp.o] Error 1
+[1.100s] gmake[1]: *** [CMakeFiles/Makefile2:139: CMakeFiles/image_publisher.dir/all] Error 2
+[1.100s] gmake[1]: *** Waiting for unfinished jobs....
+[1.102s] gmake[2]: *** [CMakeFiles/image_subscriber.dir/build.make:76: CMakeFiles/image_subscriber.dir/src/minimal_subscriber.cpp.o] Error 1
+[1.103s] gmake[1]: *** [CMakeFiles/Makefile2:165: CMakeFiles/image_subscriber.dir/all] Error 2
+[1.103s] gmake: *** [Makefile:146: all] Error 2
+[1.108s] Invoked command in '/home/thor/ros2_ws/build/cpp_pubsub' returned '2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --build /home/thor/ros2_ws/build/cpp_pubsub -- -j4 -l4
