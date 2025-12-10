@@ -1,0 +1,13 @@
+# Ignore build outputs
+build/
+install/
+log/
+
+# Common CMake + colcon generated files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+
+# VSCode settings (optional)
+.vscode/
