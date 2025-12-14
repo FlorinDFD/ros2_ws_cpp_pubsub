@@ -11,3 +11,5 @@ Makefile
 
 # VSCode settings (optional)
 .vscode/
+#db
+face_db/
